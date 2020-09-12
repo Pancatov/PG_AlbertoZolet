@@ -1,0 +1,5 @@
+2. Analise o código fonte e tente fazer a relação dos conceitos de shaders, VBOs e VAO
+apresentados até então. 
+
+VBOs trabalham armazenando a informação que será recolhida e organizada dentro do SetupGeometry() e entregue ao VAO, em seguida, para a execução da informação contida no VAO, é necessário 
+um shader, que será responsável por processar essa informação e formata-la para que seja executada pela openGL na DrawCall.
