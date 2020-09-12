@@ -1,0 +1,4 @@
+Exercício 2 no arquivo de texto.
+Exercício 3 aplicado no código, e explicado no arquivo de texto.
+
+Todos os exercícios estão como projetos dentro da mesma solução, bibliotecas foram alocadas utilizando (..\..\).
