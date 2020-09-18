@@ -1,0 +1,3 @@
+Após efetuar o desenho com a câmera do exercicio 2, é visível a necessidade de aumentar as proporções dos desenhos para acompanhar a variação do tamanho da tela,
+juntamente com o fato de que o eixo Y agora tem sua origem no canto superior esquerdo, tornando essa configuração mais prática para o desenvolvimento de jogos uma vez
+que grande parte dos aplicativos de modelagem e estruturação de fases aplica as origens dos eixos X e Y nessa mesma posição.

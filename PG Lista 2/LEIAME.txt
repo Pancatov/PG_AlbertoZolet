@@ -1,0 +1,1 @@
+Todos os exercícios com exceção do 2 e 3 foram feitos em um projeto único, os quais funcionam juntos no projeto Exercicio 2 somado ao arquivo de texto Exercicio 3. 
