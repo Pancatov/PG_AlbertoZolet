@@ -8,7 +8,6 @@
 #include <vector>
 #pragma once
 
-
 using namespace std;
 
 class Camadas
@@ -22,13 +21,9 @@ public:
 	void setDesloc(float deslocamento);
 	float getDesloc();
 
-
 	float desloc=0;
-
-	
 
 	Sprite* obj;
 	vector <Sprite*> objects;
 
 };
-

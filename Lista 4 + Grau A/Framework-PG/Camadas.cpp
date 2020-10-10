@@ -16,10 +16,9 @@ void Camadas::updateCamada()
 		objects[i]->update();
 		objects[i]->draw();
 	}
-
-
 }
 
+//Aqui preparamos os Sprites com todas suas coordenadas e já com a possibilidade de dimensionar as sprites
 void Camadas::adcionarObjeto(float posX,float posY,float posZ,float dimX,float dimY,float dimZ ,Shader* shader)
 {
 	obj = new Sprite;
@@ -35,10 +34,10 @@ void Camadas::adcionarObjeto(float posX,float posY,float posZ,float dimX,float d
 	obj->setPosX(posX);
 }
 
+//Os deslocamentos são iguais para todos objetos dentro de uma mesmo camada, aqui o valor desse deslocamento é setado
 void Camadas::setDesloc(float deslocamento)
 {
 	desloc = deslocamento;
-
 }
 
 float Camadas::getDesloc()

@@ -4,8 +4,11 @@
 static bool keys[1024];
 static bool resized;
 static GLuint width, height;
+
+//Variável estática para controle da movimentação do personagem
 enum Movimento{esquerda,parado,direita};
 static Movimento mov=parado;
+
 SceneManager::SceneManager()
 {
 }
@@ -21,7 +24,6 @@ void SceneManager::initialize(GLuint w, GLuint h)
 	
 	// GLFW - GLEW - OPENGL general setup -- TODO: config file
 	initializeGraphics();
-
 }
 
 void SceneManager::initializeGraphics()
@@ -46,7 +48,6 @@ void SceneManager::initializeGraphics()
 		std::cout << "Failed to initialize GLAD" << std::endl;
 
 	}
-
 	// Build and compile our shader program
 	addShader("../shaders/transformations.vs", "../shaders/transformations.frag");
 
@@ -64,7 +65,7 @@ void SceneManager::addShader(string vFilename, string fFilename)
 	shader = new Shader (vFilename.c_str(), fFilename.c_str());
 }
 
-
+//Mudança da variável estática que controla o movimento do personagem de acordo com input de teclas
 void SceneManager::key_callback(GLFWwindow * window, int key, int scancode, int action, int mode)
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -100,16 +101,13 @@ void SceneManager::resize(GLFWwindow * window, int w, int h)
 	glViewport(0, 0, width, height);
 }
 
-
 void SceneManager::update()
 {
 	if (keys[GLFW_KEY_ESCAPE])
 		glfwSetWindowShouldClose(window, GL_TRUE);
-
-
-	//AQUI aplicaremos as transformações nos sprites
+	//AQUI APLICAREMOS TRANSFORMAÇÕES NOS SPRITES//
 	
-	//altera o angulo do segundo objeto
+	//Controle de movimentação do personagem
 	switch (mov)
 	{
 	case esquerda:
@@ -122,39 +120,32 @@ void SceneManager::update()
 		break;
 	}
 	camadas[4].objects[0]->setPosition(glm::vec3(camadas[4].objects[0]->getPosX(), camadas[4].objects[0]->getPosYInicial(), camadas[4].objects[0]->getPosZInicial()));
+	
 	for (int i = 0; i < 4; i++)
 	{
-		
-		//camadas[i].objects[0]->posX=(camadas[i].objects[0]->getPosX() +  camadas[i].getDesloc());
-		//camadas[i].objects[0]->setPosition(glm::vec3(camadas[i].objects[0]->getPosX(), camadas[i].objects[0]->getPosYInicial(), camadas[i].objects[0]->getPosZInicial()));
-		//camadas[i].objects[1]->setPosX(camadas[i].objects[1]->getPosX() + (float)glfwGetTime() * camadas[i].getDesloc());
-		//camadas[i].objects[1]->setPosition(glm::vec3(camadas[i].objects[0]->getPosX(), camadas[i].objects[1]->getPosYInicial(), camadas[i].objects[1]->getPosZInicial()));
-
+		//Movimentação constante das camadas do parallax
 		camadas[i].objects[0]->setPosition(glm::vec3(camadas[i].objects[0]->getPosXInicial() + camadas[i].objects[0]->tempo * camadas[i].getDesloc(), camadas[i].objects[0]->getPosYInicial(), camadas[i].objects[0]->getPosZInicial()));
 		camadas[i].objects[1]->setPosition(glm::vec3(camadas[i].objects[1]->getPosXInicial() + camadas[i].objects[1]->tempo * camadas[i].getDesloc(), camadas[i].objects[1]->getPosYInicial(), camadas[i].objects[1]->getPosZInicial()));
-		
-		
-		
+		//Adição na variação de tempo dentro da variável que todos objetos possuem
 		camadas[i].objects[0]->tempo += 0.001f;
 		camadas[i].objects[1]->tempo +=0.001f;
 		
-		//camadas[i].objects[0]->variante = camadas[i].objects[0]->getPosX() + (float)glfwGetTime() * camadas[i].getDesloc();
-
-		if (camadas[i].objects[0]->getPosX()>=1200.0f)
+		//Atualização da posição dos sprites que formam o parallax
+		if (camadas[i].objects[0]->getPosX()<=-400.0f)
 		{
 			
-			camadas[i].objects[0]->setPosXInicial(-399.0f);
+			camadas[i].objects[0]->setPosXInicial(1190.0f);
 			camadas[i].objects[0]->tempo=0;
 			
 		}
-		if (camadas[i].objects[1]->getPosX() >= 1200.0f)
+		if (camadas[i].objects[1]->getPosX() <= -400.0f)
 		{
 			camadas[i].objects[1]->tempo = 0;
-			camadas[i].objects[1]->setPosXInicial(-399.0f);
+			camadas[i].objects[1]->setPosXInicial(1190.0f);
 		}
-
-
 	}
+
+	//Colisão do personagem com o objeto hard coded
 	if ((camadas[4].objects[0]->getPosX()+31 >= camadas[5].objects[0]->getPosX() - 32.5f) && (camadas[4].objects[0]->getPosX() < camadas[5].objects[0]->getPosX()))
 	{
 		camadas[5].objects[0]->setPosX(1200.0f);
@@ -219,60 +210,26 @@ void SceneManager::setupScene()
 {
 	//Criação dos Sprites iniciais -- pode-se fazer métodos de criação posteriormente
 	
-	//Mínimo: posicao e escala e ponteiro para o shader
+	camadas[0].adcionarObjeto(400.0f, 250.0f, 0.0, 800.0f, 300.0f, 0.0f, shader);
+	camadas[0].adcionarObjeto(1200.0f, 250.0f, 0.0, 800.0f, 300.0f, 0.0f, shader);
+	camadas[0].setDesloc(-200.0f);
 
-	//Sprite* obj = new Sprite;
-	//obj->setPosition(glm::vec3(400.0f, 300.0f, 0.0));
-	//obj->setDimension(glm::vec3(302.0f, 402.0f, 1.0f)); //note que depois podemos reescalar conforme tamanho da sprite
-	//obj->setShader(shader);
-	//objects.push_back(obj); //adiciona o primeiro obj
+	camadas[1].adcionarObjeto(400, 250.0f, 0.0, 800.0f, 360.0f, 1.0f, shader);
+	camadas[1].adcionarObjeto(1200.0f, 250.0f, 0.0, 800.0f, 360.0f, 1.0f, shader);
+	camadas[1].setDesloc(-400.0f);
 
-	////Adicionando mais um
-	//obj = new Sprite;
-	//obj->setPosition(glm::vec3(700.0f, 300.0f, 0.0));
-	//obj->setDimension(glm::vec3(100.0f, 200.0f, 1.0f));
-	//obj->setShader(shader);
-	//objects.push_back(obj); //adiciona o segundo obj
+	camadas[2].adcionarObjeto(400.0f, 324.0f, 0.0, 800.0f, 550.0f, 1.0f, shader);
+	camadas[2].adcionarObjeto(1200.0f, 324.0f, 0.0, 800.0f, 550.0f, 1.0f, shader);
+	camadas[2].setDesloc(-600.0f);
 
-	////Adicionando mais um
-	//obj = new Sprite;
-	//obj->setPosition(glm::vec3(0.0f, 0.0f, 0.0));
-	//obj->setDimension(glm::vec3(100.0f, 100.0f, 1.0f));
-	//obj->setShader(shader);
-	//objects.push_back(obj); //adiciona o terceiro obj
-
-	
-	camadas[0].adcionarObjeto(0.0f, 250.0f, 0.0, 800.0f, 300.0f, 0.0f, shader);
-	camadas[0].adcionarObjeto(800.0f, 250.0f, 0.0, 800.0f, 300.0f, 0.0f, shader);
-	camadas[0].setDesloc(20.0f);
-
-	camadas[1].adcionarObjeto(0.0f, 250.0f, 0.0, 800.0f, 360.0f, 1.0f, shader);
-	camadas[1].adcionarObjeto(800.0f, 250.0f, 0.0, 800.0f, 360.0f, 1.0f, shader);
-	camadas[1].setDesloc(40.0f);
-
-	camadas[2].adcionarObjeto(0.0f, 324.0f, 0.0, 800.0f, 550.0f, 1.0f, shader);
-	camadas[2].adcionarObjeto(800.0f, 324.0f, 0.0, 800.0f, 550.0f, 1.0f, shader);
-	camadas[2].setDesloc(60.0f);
-
-	camadas[3].adcionarObjeto(0.0f, 36.0f, 0.0, 800.0f, 72.0f, 1.0f, shader);
-	camadas[3].adcionarObjeto(800.0f, 36.0f, 0.0, 800.0f, 72.0f, 1.0f, shader);
-	camadas[3].setDesloc(60.0f);
+	camadas[3].adcionarObjeto(400.0f, 36.0f, 0.0, 800.0f, 72.0f, 1.0f, shader);
+	camadas[3].adcionarObjeto(1200.0f, 36.0f, 0.0, 800.0f, 72.0f, 1.0f, shader);
+	camadas[3].setDesloc(0.0f);
 
 	camadas[4].adcionarObjeto(50.0f, 113.0f, 0.0f, 62.0f, 83.0f, 1.0f, shader);
-	camadas[4].setDesloc(0.2f);
+	camadas[4].setDesloc(5.0f);
 
 	camadas[5].adcionarObjeto(750.0f, 113.0f, 0.0f, 65.0f, 64.25f, 1.0f, shader);
-
-	
-	//Adicionando mais um
-	
-
-	//Adicionando mais um
-	
-
-
-
-
 
 	//Carregamento das texturas (pode ser feito intercalado na criação)
 	//Futuramente, utilizar classe de materiais e armazenar dimensoes, etc

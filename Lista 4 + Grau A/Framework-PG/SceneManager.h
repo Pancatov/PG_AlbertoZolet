@@ -38,9 +38,7 @@ public:
 	void addShader(string vFilename, string fFilename);
 	void setupScene(); //antigo setupGeometry
 	void setupCamera2D();
-	unsigned int loadTexture(string filename); 
-
-	float tempo = 0.001f;
+	unsigned int loadTexture(string filename);
 	
 	float movimento;
 

@@ -26,7 +26,7 @@ public:
 	void setAngle(float angle) { this->angle = angle; } //para 3D precisa angulo por eixo ou quaternion
 	
 	glm::vec3 getPosition();
-	//Para controle direto da matriz de transformações
+	//Alguns gets e sets para maior controle dos objetos durante a atualização da cena
 	void setRotation(float angle, glm::vec3 axis, bool reset = true);
 	void setTranslation(glm::vec3 displacements, bool reset = true);
 	void setScale(glm::vec3 scaleFactors, bool reset = true);
@@ -45,7 +45,7 @@ public:
 	void draw();
 	void update();
 
-	//TO DO: métodos para animação
+	//Uma versão hardcoded do glfwGetTime(), com ele podemos reiniciar seu valor para que não fique adicionando infinitamente
 	float tempo = 0.000f;
 protected:
 	//Atributos gerais
@@ -67,7 +67,5 @@ protected:
 	int iAnim, iFrame; //indices da animação e frame atual
 
 	float posXInicial=0, posYInicial=0, posZInicial=0;
-	
-
 };
 

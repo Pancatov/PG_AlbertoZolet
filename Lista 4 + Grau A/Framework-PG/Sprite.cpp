@@ -135,17 +135,12 @@ void Sprite::draw()
 
 void Sprite::update()
 {
-	//Por enquanto o update é basicamente pedir para atualizar no shader 
-	//a matriz de transformação
-
+	//A matriz de transformação
 	setTranslation(pos);
 	setRotation(angle, glm::vec3(0.0f, 0.0f, 1.0f), false);
 	setScale(scale, false);
 
 	GLint transformLoc = glGetUniformLocation(shader->ID, "model");
-	// Pass them to the shaders
+	//Pass them to the shaders
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-	//TO DO: quando tiver animação por spritesheet, passar os deslocamentos
-	//nas coords de textura
 }
