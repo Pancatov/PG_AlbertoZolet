@@ -5,7 +5,6 @@ static bool keys[1024];
 static bool resized;
 static GLuint width, height;
 
-static Direcoes dir = PARADO;
 SceneManager::SceneManager()
 {
 }
@@ -18,7 +17,6 @@ void SceneManager::initialize(GLuint w, GLuint h)
 {
 	width = w;
 	height = h;
-	
 	
 	// GLFW - GLEW - OPENGL general setup -- TODO: config file
 	initializeGraphics();
@@ -50,7 +48,12 @@ void SceneManager::initializeGraphics()
 
 	// Build and compile our shader program
 	addShader("../shaders/transformations.vs", "../shaders/transformations.frag");
-
+	addShader("../shaders/GrayScale.vs", "../shaders/GrayScale.frag");
+	addShader("../shaders/Colorizar.vs", "../shaders/Colorizar.frag");
+	addShader("../shaders/Inversao.vs", "../shaders/Inversao.frag");
+	addShader("../shaders/Binarizar.vs", "../shaders/Binarizar.frag");
+	addShader("../shaders/SemFiltro.vs", "../shaders/SemFiltro.frag");
+	addShader("../shaders/MeuFiltro.vs", "../shaders/MeuFiltro.frag");
 	//setup the scene -- LEMBRANDO QUE A DESCRIÇÃO DE UMA CENA PODE VIR DE ARQUIVO(S) DE 
 	// CONFIGURAÇÃO
 	setupScene();
@@ -61,7 +64,8 @@ void SceneManager::initializeGraphics()
 
 void SceneManager::addShader(string vFilename, string fFilename)
 {
-	shader = new Shader (vFilename.c_str(), fFilename.c_str());
+	Shader* shader = new Shader (vFilename.c_str(), fFilename.c_str());
+	shaders.push_back(shader);
 }
 
 
@@ -76,197 +80,6 @@ void SceneManager::key_callback(GLFWwindow * window, int key, int scancode, int 
 		else if (action == GLFW_RELEASE)
 			keys[key] = false;
 	}
-
-	if (action == GLFW_PRESS)
-	{
-		if (key == GLFW_KEY_W)
-		{
-			
-			dir = NORTE;
-			
-	    }
-
-		if (key == GLFW_KEY_E)
-		{
-			dir = NORDESTE;
-	
-		}
-
-		if (key == GLFW_KEY_D)
-		{
-			dir = LESTE;
-			
-		}
-
-		if (key == GLFW_KEY_C)
-		{
-			dir = SUDESTE;
-			
-		}
-
-		if (key == GLFW_KEY_X)
-		{
-			dir = SUL;
-			
-		}
-
-		if (key == GLFW_KEY_Z)
-		{
-			dir = SUDOESTE;
-			
-		}
-
-		if (key == GLFW_KEY_A)
-		{
-			dir = OESTE;
-			
-		}
-
-		if (key == GLFW_KEY_Q)
-		{
-			dir = NOROESTE;
-		
-		}
-
-
-
-	}
-}
-
-void SceneManager::do_movement()
-{
-	if (keys[GLFW_KEY_ESCAPE])
-	{
-		glfwSetWindowShouldClose(window, GL_TRUE);
-	}
-
-	if (dir == NORTE)
-	{
-		if ((posLinha != 4) && (posColuna != 4))
-		{
-			if (mapWalking[posLinha + 1][posColuna + 1] == 1)
-			{
-				mapWalking[posLinha][posColuna] = 0;
-				map[posLinha][posColuna] = 0;
-				posColuna += 1;
-				posLinha += 1;
-			}
-		}
-		dir = PARADO;
-	}
-
-	if (dir == NORDESTE)
-	{
-		personagem->setDireita();
-		if (posColuna != 4)
-		{
-			if (mapWalking[posLinha][posColuna + 1] == 1)
-			{
-				mapWalking[posLinha][posColuna] = 0;
-				map[posLinha][posColuna] = 0;
-				posColuna += 1;
-				posLinha -= 0;
-			}
-		}
-		dir = PARADO;
-	}
-
-	if (dir == LESTE)
-	{
-		personagem->setDireita();
-		if ((posLinha != 0) && (posColuna != 4) )
-		{
-			if (mapWalking[posLinha - 1][posColuna + 1] == 1)
-			{
-				mapWalking[posLinha][posColuna] = 0;
-				map[posLinha][posColuna] = 0;
-				posColuna += 1;
-				posLinha -= 1;
-			}
-		}
-		dir = PARADO;
-	}
-
-	if (dir == SUDESTE)
-	{
-		personagem->setDireita();
-		if (posLinha != 0)
-		{
-			if (mapWalking[posLinha - 1][posColuna] == 1)
-			{
-				mapWalking[posLinha][posColuna] = 0;
-				map[posLinha][posColuna] = 0;
-				posColuna -= 0;
-				posLinha -= 1;
-			}
-		}
-		dir = PARADO;
-	}
-
-	if (dir == SUL)
-	{
-		if ((posColuna != 0) && (posLinha != 0))
-		{
-			if (mapWalking[posLinha - 1][posColuna - 1] == 1)
-			{
-				mapWalking[posLinha][posColuna] = 0;
-				map[posLinha][posColuna] = 0;
-				posColuna -= 1;
-				posLinha -= 1;
-			}
-		}
-		dir = PARADO;
-	}
-
-	if (dir == SUDOESTE)
-	{
-		personagem->setEsquerda();
-		if (posColuna != 0)
-		{
-			if (mapWalking[posLinha][posColuna - 1] == 1)
-			{
-				mapWalking[posLinha][posColuna] = 0;
-				map[posLinha][posColuna] = 0;
-				posColuna -= 1;
-				posLinha += 0;
-			}
-		}
-		dir = PARADO;
-	}
-
-	if (dir == OESTE)
-	{
-		personagem->setEsquerda();
-		if ((posColuna != 0)&&(posLinha!=4))
-		{
-			if (mapWalking[posLinha + 1][posColuna - 1] == 1)
-			{
-				mapWalking[posLinha][posColuna] = 0;
-				map[posLinha][posColuna] = 0;
-				posColuna -= 1;
-				posLinha += 1;
-			}
-		}
-		dir = PARADO;
-	}
-
-	if (dir == NOROESTE)
-	{
-		personagem->setEsquerda();
-		if (posLinha != 4)
-		{
-			if (mapWalking[posLinha + 1][posColuna] == 1)
-			{
-				mapWalking[posLinha][posColuna] = 0;
-				map[posLinha][posColuna] = 0;
-				posColuna += 0;
-				posLinha += 1;
-			}
-		}
-		dir = PARADO;
-	}
-
-
 }
 
 void SceneManager::resize(GLFWwindow * window, int w, int h)
@@ -289,53 +102,7 @@ void SceneManager::update()
 	//AQUI aplicaremos as transformações nos sprites
 	
 	//altera o angulo do segundo objeto
-	//objects[1]->setAngle((float)glfwGetTime
-	if ((mapWalking[posLinha + 1][posColuna] == 0) && (mapWalking[posLinha + 1][posColuna + 1] == 0) && (mapWalking[posLinha][posColuna + 1] == 0))
-	{
-		if ((mapWalking[posLinha - 1][posColuna] == 0) && (mapWalking[posLinha - 1][posColuna - 1] == 0) && (mapWalking[posLinha][posColuna - 1] == 0))
-		{
-			if ((mapWalking[posLinha + 1][posColuna - 1] == 0) && (mapWalking[posLinha + 1][posColuna - 1] == 0) && (mapWalking[posLinha - 1][posColuna + 1] == 0) && (mapWalking[posLinha - 1][posColuna + 1] == 0))
-			{
-				vivo = false;
-			}
-		}
-
-	}
-
-	/*else if (posLinha = 0 && posColuna!=0 && posColuna!=4)
-	{
-		if ((mapWalking[posLinha][posColuna-1] == 0) && (mapWalking[posLinha + 1][posColuna ] == 0) && (mapWalking[posLinha+1][posColuna - 1] == 0)&&(mapWalking[posLinha + 1][posColuna + 1] == 0) && (mapWalking[posLinha][posColuna + 1] == 0))
-		{
-			
-					vivo = false;
-			
-
-		}
-	}*/
-
-	/*else if (posColuna = 0 && posLinha != 0 && posLinha != 4)
-	{
-		if ((mapWalking[posLinha - 1][posColuna] == 0) && (mapWalking[posLinha][posColuna+1] == 0) && (mapWalking[posLinha - 1][posColuna + 1] == 0) && (mapWalking[posLinha + 1][posColuna + 1] == 0) && (mapWalking[posLinha + 1][posColuna] == 0))
-		{
-
-			vivo = false;
-
-
-		}
-	}*/
-
-	if (vivo)
-	{
-		do_movement();
-	}
-	else
-	{
-		//std::cout << "morreu";
-		telas[1]->update();
-		telas[1]->draw();
-		
-	}
-	
+	//objects[1]->setAngle((float)glfwGetTime());
 }
 
 void SceneManager::render()
@@ -353,83 +120,17 @@ void SceneManager::render()
 
 	//atualiza e desenha os Sprites
 
-	
-
-	float xi = 400.0;
-	float yi = 100.0;
-
-	for (int i = 0; i < ROWS; i++)
+	for (int i = 0; i < objects.size(); i++)
 	{
-		for (int j = 0; j < COLS; j++)
-		{
-			float x = xi + (j - i) * 160 / 2.0;
-			float y = yi + (j + i) * 80 / 2.0;
-			/*model = glm::mat4();
-			model = glm::translate(model, glm::vec3(x, y, 0.0));*/
-			tileset[map[i][j]]->setPosition(glm::vec3(x, y, 0.9f));
-			tileset[map[i][j]]->update();
-			tileset[map[i][j]]->draw();
-			//model
-		}
+		//Precisa ser descomentado para o exercicio 1.A
+		shaders[0]->setInt("IDExercicio", i + 1);
+		shaders[4]->setInt("limiar",84);
+		shaders[6]->setInt("limiarMeuFiltro",84);
+
+		objects[i]->update();
+		objects[i]->draw();
 	}
-
-	float xP = xi + (posColuna - posLinha) * 160 / 2.0;
-	float yP = yi + (posColuna + posLinha) * 80 / 2.0;
-	personagem->setPosition(glm::vec3(xP, yP+40, 1.0f));
-	tileset[3]->setPosition(glm::vec3(xP, yP, 1.0f));
-	tileset[3]->update();
-	tileset[3]->draw();
 	
-	personagem->update();
-	personagem->draw();
-
-
-	/*
-	copia funcao de cima, altera o "tileset" usado pelo player
-	
-	*/
-	
-
-	
-	if (posColuna == 4 && posLinha == 4)
-	{
-		for (int i = 0; i < ROWS; i++)
-		{
-			for (int j = 0; j < COLS; j++)
-			{
-				if(mapWalking[i][j] == 1 && map[i][j]!=2)
-				{
-					
-						ind_vitoria = false;
-					
-					
-				}
-				
-			}
-		}
-
-
-		if (ind_vitoria)
-		{
-			//vitoria.setPosition(glm::vec3(400.0f,300.0f, 1.0f));
-			//vitoria.setDimension(glm::vec3(800.0f, 600.0f, 1.0f));
-			telas[0]->update();
-			telas[0]->draw();
-			
-			vivo = false;
-		}
-		else
-		{
-			//derrota.setPosition(glm::vec3(400.0f, 300.0f, 1.0f));
-			//derrota.setDimension(glm::vec3(800.0f, 600.0f, 1.0f));
-			telas[1]->update();
-			telas[1]->draw();
-			
-			vivo = false;
-		}
-
-	}
-
 
 }
 
@@ -462,151 +163,211 @@ void SceneManager::finish()
 
 void SceneManager::setupScene()
 {
-	
 	//Criação dos Sprites iniciais -- pode-se fazer métodos de criação posteriormente
-	//Tile 0
-	TileIso* tile = new TileIso(0, 80.0f, 160.0f);
-	
-	tile->setDimension(glm::vec3(160.0f, 80.0f, 1.0f)); //note que depois podemos reescalar conforme tamanho da sprite
-	tile->setShader(shader);
-	tileset.push_back(tile);
-
-	//Tile 1
-
-	tile = new TileIso(1, 80.0f, 160.0f);
-	tile->setDimension(glm::vec3(160.0f, 80.0f, 1.0f));
-	tile->setShader(shader);
-	tileset.push_back(tile);
-	
-
-	//Tile 2
-	
-	tile = new TileIso(2, 80.0f, 160.0f);
-	tile->setDimension(glm::vec3(160.0f, 80.0f, 1.0f));
-	tile->setShader(shader);
-	tileset.push_back(tile);
-
-	tile = new TileIso(3, 80.0f, 160.0f);
-	tile->setDimension(glm::vec3(160.0f, 80.0f, 1.0f));
-	tile->setShader(shader);
-	tileset.push_back(tile);
-
-	unsigned int texID = loadTexture("../textures/TILESET.png");
-	tileset[0]->setTexture(texID);
-	tileset[1]->setTexture(texID);
-	tileset[2]->setTexture(texID);
-	tileset[3]->setTexture(texID);
-	
-
-	int mapa[5][5] =
-	{  1,1,1,1,1,
-	   1,1,1,1,1,
-	   1,1,0,1,1,
-	   1,1,1,1,1,
-	   1,1,1,1,2
-	};
-
-	int mapaCaminhavel[5][5] =
-	{ 1,1,1,1,1,
-	  1,1,1,1,1,
-	  1,1,0,1,1,
-	  1,1,1,1,1,
-	  1,1,1,1,1
-	};
-
-	
-
-	posLinha = 0;
-	posColuna = 0;
-	dir = PARADO;
-	ind_vitoria = true;
-	vivo = true;
-	
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			map[i][j] = mapa[i][j];
-		}
-	}
-
-	for (int i = 0; i < ROWS; i++)
-	{
-		for (int j = 0; j < COLS; j++)
-		{
-			mapWalking[i][j] = mapaCaminhavel[i][j];
-		}
-	}
 	
 	//Mínimo: posicao e escala e ponteiro para o shader
+
+//=========================================================================================================================================
+	//MEU FILTRO
+	
+	Sprite* obj = new Sprite;
+	obj->setPosition(glm::vec3(350.5f, 496.0f, 0.0));
+	obj->setDimension(glm::vec3(701.0f, 992.0f, 1.0f));
+	obj->setShader(shaders[5]);
+	objects.push_back(obj); //adiciona o primeiro obj
+	
+
+	//Adicionando mais um
+	obj = new Sprite;
+	obj->setPosition(glm::vec3(350.9f, 572.7f, 0.0));
+	obj->setDimension(glm::vec3(575.0f, 416.0f, 1.0f)); //note que depois podemos reescalar conforme tamanho da sprite
+	obj->setShader(shaders[6]);
+	objects.push_back(obj); //adiciona o primeiro obj
+	shaders[6]->setInt("limiarMeuFiltro", 64);
+	shaders[6]->setVec3("novaCorMeuFiltro", 0.29, 0.21, 0.12);
+
+	unsigned int texID = loadTexture("../textures/TemplateBannerOP.png");
+	objects[0]->setTexture(texID);
+
+
+	//use essa textura para uma feliz surpresa
+	//texID = loadTexture("../textures/Snow.png");
+
+	texID = loadTexture("../textures/lena.png");
+	objects[1]->setTexture(texID);
+
+
+//=========================================================================================================================================
+	//EXERCICIO 1.A
 	//Sprite* obj = new Sprite;
-	//obj->setPosition(glm::vec3(400.0f, 300.0f, 0.0));
-	//obj->setDimension(glm::vec3(400.0f, 400.0f, 1.0f)); //note que depois podemos reescalar conforme tamanho da sprite
-	//obj->setShader(shader);
+	//obj->setPosition(glm::vec3(200.0f, 300.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));//note que depois podemos reescalar conforme tamanho da sprite
+	//obj->setShader(shaders[0]);
 	//objects.push_back(obj); //adiciona o primeiro obj
-	//objects[0]->setAngle(0.8f);
+	//shaders[0]->setInt("IDExercicio", 1);
 
-	////Adicionando mais um
 	//obj = new Sprite;
-	//obj->setPosition(glm::vec3(700.0f, 300.0f, 0.0));
-	//obj->setDimension(glm::vec3(100.0f, 200.0f, 1.0f));
-	//obj->setShader(shader);
-	//objects.push_back(obj); //adiciona o segundo obj
+	//obj->setPosition(glm::vec3(400.0f, 300.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));//note que depois podemos reescalar conforme tamanho da sprite
+	//obj->setShader(shaders[0]);
+	//objects.push_back(obj);
 
-	////Adicionando mais um
 	//obj = new Sprite;
-	//obj->setPosition(glm::vec3(0.0f, 0.0f, 0.0));
-	//obj->setDimension(glm::vec3(100.0f, 100.0f, 1.0f));
-	//obj->setShader(shader);
-	//objects.push_back(obj); //adiciona o terceiro obj
+	//obj->setPosition(glm::vec3(600.0f, 300.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));//note que depois podemos reescalar conforme tamanho da sprite
+	//obj->setShader(shaders[0]);
+	//objects.push_back(obj);
 
+	//unsigned int texID = loadTexture("../textures/lena.png");
+	//objects[0]->setTexture(texID);
+	//objects[1]->setTexture(texID);
+	//objects[2]->setTexture(texID);
+
+	//Dar comment nos 2 ultimos Shaders do render;
+
+//=========================================================================================================================================
+	//EXERCICIO 1.B
+
+
+	/*Sprite* obj = new Sprite;
+	obj->setPosition(glm::vec3(350.0f, 300.0f, 0.0));
+	obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	obj->setShader(shaders[1]);
+	objects.push_back(obj); 
+
+	unsigned int texID = loadTexture("../textures/lena.png");
+	objects[0]->setTexture(texID);*/
+
+//=========================================================================================================================================
+	//EXERCICIO 1.C
+
+	/*Sprite* obj = new Sprite;
+	obj->setPosition(glm::vec3(350.0f, 300.0f, 0.0));
+	obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	obj->setShader(shaders[2]);
+	objects.push_back(obj); 
+	shaders[2]->setVec3("novaCor", 0.0, 0.0, 1.0);
+
+	unsigned int texID = loadTexture("../textures/lena.png");
+	objects[0]->setTexture(texID);*/
+//=========================================================================================================================================
+		//EXERCICIO 1.D
+
+	/*Sprite* obj = new Sprite;
+	obj->setPosition(glm::vec3(350.0f, 300.0f, 0.0));
+	obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	obj->setShader(shaders[3]);
+	objects.push_back(obj); 
+	
+
+	unsigned int texID = loadTexture("../textures/lena.png");
+	objects[0]->setTexture(texID);*/
+//=========================================================================================================================================
+		//EXERCICIO 1.E
+
+	/*Sprite* obj = new Sprite;
+	obj->setPosition(glm::vec3(350.0f, 300.0f, 0.0));
+	obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	obj->setShader(shaders[4]);
+	objects.push_back(obj); 
+	shaders[4]->setInt("limiar", 84);
+
+	unsigned int texID = loadTexture("../textures/lena.png");
+	objects[0]->setTexture(texID);*/
+//=========================================================================================================================================
+
+	//EXERCICIO 2
+
+	//Sprite* obj = new Sprite;
+	//obj->setPosition(glm::vec3(100.0f, 100.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));//note que depois podemos reescalar conforme tamanho da sprite
+	//obj->setShader(shaders[0]);
+	//objects.push_back(obj); //adiciona o primeiro obj
+	//shaders[0]->setInt("IDExercicio", 1);
+
+	//obj = new Sprite;
+	//obj->setPosition(glm::vec3(300.0f, 100.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));//note que depois podemos reescalar conforme tamanho da sprite
+	//obj->setShader(shaders[0]);
+	//objects.push_back(obj);
+
+	//obj = new Sprite;
+	//obj->setPosition(glm::vec3(500.0f, 100.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));//note que depois podemos reescalar conforme tamanho da sprite
+	//obj->setShader(shaders[0]);
+	//objects.push_back(obj);
+
+    //obj = new Sprite;
+    //obj->setPosition(glm::vec3(100.0f, 300.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	//obj->setShader(shaders[1]);
+	//objects.push_back(obj); 
+
+    //obj = new Sprite;
+    //obj->setPosition(glm::vec3(300.0f, 300.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	//obj->setShader(shaders[2]);
+	//objects.push_back(obj); 
+	//shaders[2]->setVec3("novaCor", 0.0, 0.0, 1.0);
+
+	//obj = new Sprite;
+    //obj->setPosition(glm::vec3(500.0f, 300.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	//obj->setShader(shaders[3]);
+	//objects.push_back(obj); 
+
+	//obj = new Sprite;
+	//obj->setPosition(glm::vec3(100.0f, 500.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	//obj->setShader(shaders[4]);
+	//objects.push_back(obj); 
+	//shaders[4]->setInt("limiar", 84);
+
+	//obj = new Sprite;
+	//obj->setPosition(glm::vec3(300.0f, 500.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	//obj->setShader(shaders[5]);
+	//objects.push_back(obj); 
+
+    //obj = new Sprite;
+	//obj->setPosition(glm::vec3(500.0f, 500.0f, 0.0));
+	//obj->setDimension(glm::vec3(200.0f, 266.0f, 1.0f));
+	//obj->setShader(shaders[6]);
+	//objects.push_back(obj); 
+    //shaders[6]->setInt("limiarMeuFiltro", 84);
+    //shaders[6]->setVec3("novaCorMeuFiltro", 0.29, 0.21, 0.12);
+
+
+	//unsigned int texID = loadTexture("../textures/lena.png");
+	//objects[0]->setTexture(texID);
+	//objects[1]->setTexture(texID);
+	//objects[2]->setTexture(texID);
+    //objects[3]->setTexture(texID);
+	//objects[4]->setTexture(texID);
+	//objects[5]->setTexture(texID);
+    //objects[6]->setTexture(texID);
+	//objects[7]->setTexture(texID);
+	//objects[8]->setTexture(texID);
+
+//=========================================================================================================================================
 	//Carregamento das texturas (pode ser feito intercalado na criação)
 	//Futuramente, utilizar classe de materiais e armazenar dimensoes, etc
-	//texID = loadTexture("../textures/mario.png");
-	
-
-	Sprite* tela= new Sprite;
-	texID = loadTexture("../textures/Vitoria.png");
-	
-	tela->setPosition(glm::vec3(400.0f, 300.0f, 1.0f));
-	tela->setDimension(glm::vec3(800.0f, 600.0f, 1.0f));
-	tela->setShader(shader);
-	
-	telas.push_back(tela);
-
-	tela = new Sprite;
-	texID = loadTexture("../textures/Derrota.png");
-	
-	tela->setPosition(glm::vec3(400.0f, 300.0f, 1.0f));
-	tela->setDimension(glm::vec3(800.0f, 600.0f, 1.0f));
-	tela->setShader(shader);
-	
-	telas.push_back(tela);
-
-	texID = loadTexture("../textures/Vitoria.png");
-	telas[0]->setTexture(texID);
-
-	texID = loadTexture("../textures/Derrota.png");
-	telas[1]->setTexture(texID);
-
-
-	texID = loadTexture("../textures/SpriteSheet_Penguin.png");
-	personagem = new Personagem;
-	personagem->setPosition(glm::vec3(100.0f, 100.0f, 1.0f));
-	personagem->setDimension(glm::vec3(100.0f, 100.0f, 1.0f));
-	personagem->setShader(shader);
-	personagem->setTexture(texID);
-
+	//unsigned int texID = loadTexture("../textures/TemplateBannerOP.png");
 	//objects[0]->setTexture(texID);
-	
+
+	//texID = loadTexture("../textures/lena.png");
 	//objects[1]->setTexture(texID);
-//	objects[2]->setTexture(texID);*/
+
+	//objects[2]->setTexture(texID);
+	//texID = loadTexture("../textures/wall.jpg");
+	//objects[1]->setTexture(texID);
+	//objects[2]->setTexture(texID);
 
 	//Definindo a janela do mundo (ortho2D)
 	ortho2D[0] = 0.0f; //xMin
-	ortho2D[1] = 800.0f; //xMax
+	ortho2D[1] = 701.0f; //xMax
 	ortho2D[2] = 0.0f; //yMin
-	ortho2D[3] = 600.0f; //yMax
+	ortho2D[3] = 992.0f; //yMax
 
 	//Habilita transparência
 	glEnable(GL_BLEND);
@@ -622,9 +383,14 @@ void SceneManager::setupCamera2D() //TO DO: parametrizar aqui
 
 
 	//Obtendo o identificador da matriz de projeção para enviar para o shader
-	GLint projLoc = glGetUniformLocation(shader->ID, "projection");
-	//Enviando a matriz de projeção para o shader
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+	for (int i = 0; i < shaders.size(); i++)
+	{
+		shaders[i]->Use();
+		GLint projLoc = glGetUniformLocation(shaders[i]->ID, "projection");
+		//Enviando a matriz de projeção para o shader
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	}
 }
 
 unsigned int SceneManager::loadTexture(string filename)
@@ -670,5 +436,3 @@ unsigned int SceneManager::loadTexture(string filename)
 
 	return texture;
 }
-
-
