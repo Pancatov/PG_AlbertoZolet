@@ -119,13 +119,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\dependencies\GLFW-3.3.2-libWIN32\include;..\..\dependencies\glm;..\..\dependencies\GLAD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\dependencies\GLFW-3.3.2-libWIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -145,31 +142,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Personagem.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="TileIso.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Personagem.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="TileIso.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\shaders\Binarizar.frag" />
-    <None Include="..\shaders\Binarizar.vs" />
-    <None Include="..\shaders\Colorizar.frag" />
-    <None Include="..\shaders\Colorizar.vs" />
-    <None Include="..\shaders\GrayScale.frag" />
-    <None Include="..\shaders\GrayScale.vs" />
-    <None Include="..\shaders\Inversao.frag" />
-    <None Include="..\shaders\Inversao.vs" />
-    <None Include="..\shaders\MeuFiltro.frag" />
-    <None Include="..\shaders\MeuFiltro.vs" />
-    <None Include="..\shaders\SemFiltro.frag" />
-    <None Include="..\shaders\SemFiltro.vs" />
     <None Include="..\shaders\transformations.frag" />
     <None Include="..\shaders\transformations.vs" />
   </ItemGroup>

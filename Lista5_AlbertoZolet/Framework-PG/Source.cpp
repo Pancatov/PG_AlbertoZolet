@@ -16,7 +16,7 @@ using namespace std;
 int main()
 {
 	SceneManager *scene = new SceneManager;
-	scene->initialize(701, 992);
+	scene->initialize(800, 600);
 
 	scene->run();
 

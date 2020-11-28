@@ -2,6 +2,8 @@
 
 #include "Shader.h"
 #include "Sprite.h" 
+#include "TileIso.h"
+#include "Personagem.h"
 
 // GLM
 #include <glm/glm.hpp>
@@ -9,6 +11,11 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
+
+#define ROWS 5
+#define COLS 5
+
+enum Direcoes{PARADO,NORTE,NORDESTE,LESTE,SUDESTE,SUL,SUDOESTE,OESTE,NOROESTE};
 
 using namespace std;
 
@@ -39,6 +46,7 @@ public:
 	void setupScene(); //antigo setupGeometry
 	void setupCamera2D();
 	unsigned int loadTexture(string filename); 
+	void do_movement();
 
 private:
 	
@@ -46,16 +54,29 @@ private:
 	GLFWwindow *window;
 
 	//Programa de shader (por enquanto, assumimos apenas 1 instância)
-	vector<Shader*>shaders;
+	Shader *shader;
 
 	//Câmera 2D - Matriz de projeção (ortográfica) com os limites em x,y
 	glm::vec4 ortho2D; //xmin, xmax, ymin, ymax
 	glm::mat4 projection;
 
+	//glm::mat4 model;
 	//Nossos objetos (sprites) da cena
-	vector <Sprite*> objects;
+	int map[ROWS][COLS];
+	int mapWalking[ROWS][COLS];
 
-	int textureMaskID;
+	glm::vec2 posPersonagem;
+	int posLinha;
+	int posColuna;
+	bool ind_vitoria;
+	
+
+	//vector <Sprite*> objects;
+	vector<Sprite*> telas;
+	Sprite* mundo;
+	bool vivo;
+	Personagem* personagem;
+	vector <TileIso*> tileset;
 
 };
 

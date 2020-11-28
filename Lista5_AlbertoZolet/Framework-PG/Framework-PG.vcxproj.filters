@@ -33,6 +33,12 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="TileIso.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Personagem.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
@@ -47,48 +53,18 @@
     <ClInclude Include="Sprite.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="TileIso.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+    <ClInclude Include="Personagem.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\shaders\transformations.frag">
       <Filter>shaders</Filter>
     </None>
     <None Include="..\shaders\transformations.vs">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\GrayScale.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\GrayScale.vs">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\Colorizar.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\Colorizar.vs">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\Inversao.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\Inversao.vs">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\Binarizar.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\Binarizar.vs">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\MeuFiltro.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\MeuFiltro.vs">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\SemFiltro.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="..\shaders\SemFiltro.vs">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

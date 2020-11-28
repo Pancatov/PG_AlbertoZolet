@@ -90,7 +90,6 @@ void Sprite::update()
 {
 	//Por enquanto o update é basicamente pedir para atualizar no shader 
 	//a matriz de transformação
-	shader->Use();
 
 	setTranslation(pos);
 	setRotation(angle, glm::vec3(0.0f, 0.0f, 1.0f), false);
