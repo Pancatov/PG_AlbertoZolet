@@ -1,0 +1,11 @@
+﻿  Sprite.cpp
+  SceneManager.cpp
+F:\Users\Pc\Documents\GitHub\PG_AlbertoZolet\Lista5_AlbertoZolet\Framework-PG\SceneManager.cpp(123,20): warning C4018: '<': signed/unsigned mismatch
+F:\Users\Pc\Documents\GitHub\PG_AlbertoZolet\Lista5_AlbertoZolet\Framework-PG\SceneManager.cpp(187,58): warning C4305: 'argument': truncation from 'double' to 'float'
+F:\Users\Pc\Documents\GitHub\PG_AlbertoZolet\Lista5_AlbertoZolet\Framework-PG\SceneManager.cpp(387,20): warning C4018: '<': signed/unsigned mismatch
+  Source.cpp
+  stb_image.cpp
+  Generating Code...
+  glad.c
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Framework-PG.vcxproj -> F:\Users\Pc\Documents\GitHub\PG_AlbertoZolet\Lista5_AlbertoZolet\Debug\Framework-PG.exe
